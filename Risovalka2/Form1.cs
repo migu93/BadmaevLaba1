@@ -12,6 +12,8 @@ namespace Risovalka2
 {
     public partial class Form1 : Form
     {
+        int countClick = 0;
+        List<Point> points = new List<Point>();
         public Form1()
         {
             InitializeComponent();
@@ -80,8 +82,26 @@ namespace Risovalka2
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
             Graphics g = pictureBox1.CreateGraphics();
-            Bresenham4Line(g, Color.Black, 10, 10, 20, 20);
+            txtArray.Clear();
+            points.Add(new Point(e.X, e.Y));
+
+            foreach (var item in points)
+            {
+                txtArray.Text += $"X: {item.X}  \nY: {item.Y}" + Environment.NewLine;
+            }
+            if (countClick > 0)
+            {
+                Bresenham4Line(g, Color.Black, points[countClick - 1].X, points[countClick - 1].Y, points[countClick].X, points[countClick].Y);
+            }
+            countClick++;
+            SolidBrush brush = new SolidBrush(Color.Red);
+            g.FillRectangle(brush, points[countClick - 1].X, points[countClick - 1].Y, 2, 2);
         }
     }
 }
