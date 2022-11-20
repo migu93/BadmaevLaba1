@@ -98,17 +98,94 @@ namespace Risovalka2
             }
             if (countClick > 0)
             {
-                Bresenham4Line(g, Color.Black, points[countClick - 1].X, points[countClick - 1].Y, points[countClick].X, points[countClick].Y);
+                //Bresenham4Line(g, Color.Black, points[countClick - 1].X, points[countClick - 1].Y, points[countClick].X, points[countClick].Y);
+                //DrawWuLine(g, Color.Black, points[countClick - 1].X, points[countClick - 1].Y, points[countClick].X, points[countClick].Y);
             }
             countClick++;
             SolidBrush brush = new SolidBrush(Color.Red);
             g.FillRectangle(brush, points[countClick - 1].X, points[countClick - 1].Y, 2, 2);
+        }
+
+        public static void DrawWuLine(Graphics g, Color clr, int x0, int y0, int x1, int y1)
+        {
+            //Вычисление изменения координат
+            int dx = (x1 > x0) ? (x1 - x0) : (x0 - x1);
+            int dy = (y1 > y0) ? (y1 - y0) : (y0 - y1);
+            //Если линия параллельна одной из осей, рисуем обычную линию - заполняем все пикселы в ряд
+            if (dx == 0 || dy == 0)
+            {
+                g.DrawLine(new Pen(clr), x0, y0, x1, y1);
+                return;
+            }
+
+            //Для Х-линии (коэффициент наклона < 1)
+            if (dy < dx)
+            {
+                //Первая точка должна иметь меньшую координату Х
+                if (x1 < x0)
+                {
+                    x1 += x0; x0 = x1 - x0; x1 -= x0;
+                    y1 += y0; y0 = y1 - y0; y1 -= y0;
+                }
+                //Относительное изменение координаты Y
+                float grad = (float)dy / dx;
+                //Промежуточная переменная для Y
+                float intery = y0 + grad;
+                //Первая точка
+                PutPixel(g, clr, x0, y0, 255);
+
+                for (int x = x0 + 1; x < x1; x++)
+                {
+                    //Верхняя точка
+                    PutPixel(g, clr, x, RasterAlgorithms.IPart(intery), (int)(255 - RasterAlgorithms.FPart(intery) * 255));
+                    //Нижняя точка
+                    PutPixel(g, clr, x, RasterAlgorithms.IPart(intery) + 1, (int)(RasterAlgorithms.FPart(intery) * 255));
+                    //Изменение координаты Y
+                    intery += grad;
+                }
+                //Последняя точка
+                PutPixel(g, clr, x1, y1, 255);
+            }
+            //Для Y-линии (коэффициент наклона > 1)
+            else
+            {
+                //Первая точка должна иметь меньшую координату Y
+                if (y1 < y0)
+                {
+                    x1 += x0; x0 = x1 - x0; x1 -= x0;
+                    y1 += y0; y0 = y1 - y0; y1 -= y0;
+                }
+                //Относительное изменение координаты X
+                float grad = (float)dx / dy;
+                //Промежуточная переменная для X
+                float interx = x0 + grad;
+                //Первая точка
+                PutPixel(g, clr, x0, y0, 255);
+
+                for (int y = y0 + 1; y < y1; y++)
+                {
+                    //Верхняя точка
+                    PutPixel(g, clr, RasterAlgorithms.IPart(interx), y, 255 - (int)(RasterAlgorithms.FPart(interx) * 255));
+                    //Нижняя точка
+                    PutPixel(g, clr, RasterAlgorithms.IPart(interx) + 1, y, (int)(RasterAlgorithms.FPart(interx) * 255));
+                    //Изменение координаты X
+                    interx += grad;
+                }
+                //Последняя точка
+                PutPixel(g, clr, x1, y1, 255);
+            }
+        }
+
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+            Graphics g = pictureBox1.CreateGraphics();
 
             if (e.Button == MouseButtons.Right)
             {
-                for (int i = 0; i < points.Count; i++)
+                for (int i = 0; i < points.Count - 1; i++)
                 {
-                    g.FillRectangle(brush, points[i].X, points[i++].Y, 2, 2);
+                    DrawWuLine(g, Color.Black, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
+                    //Bresenham4Line(g, Color.Black, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
                 }
             }
         }
