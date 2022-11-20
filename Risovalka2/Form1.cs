@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Risovalka2
 {
@@ -102,6 +103,14 @@ namespace Risovalka2
             countClick++;
             SolidBrush brush = new SolidBrush(Color.Red);
             g.FillRectangle(brush, points[countClick - 1].X, points[countClick - 1].Y, 2, 2);
+
+            if (e.Button == MouseButtons.Right)
+            {
+                for (int i = 0; i < points.Count; i++)
+                {
+                    g.FillRectangle(brush, points[i].X, points[i++].Y, 2, 2);
+                }
+            }
         }
     }
 }
