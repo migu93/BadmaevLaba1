@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -96,14 +98,14 @@ namespace Risovalka2
             {
                 txtArray.Text += $"X: {item.X}  \nY: {item.Y}" + Environment.NewLine;
             }
-            if (countClick > 0)
-            {
-                //Bresenham4Line(g, Color.Black, points[countClick - 1].X, points[countClick - 1].Y, points[countClick].X, points[countClick].Y);
-                //DrawWuLine(g, Color.Black, points[countClick - 1].X, points[countClick - 1].Y, points[countClick].X, points[countClick].Y);
-            }
             countClick++;
             SolidBrush brush = new SolidBrush(Color.Red);
             g.FillRectangle(brush, points[countClick - 1].X, points[countClick - 1].Y, 2, 2);
+            if (points.Count > 4)
+            {
+                rbCurveBize.Checked = false;
+                rbBizeN.Checked = true;
+            }
         }
 
         public static void DrawWuLine(Graphics g, Color clr, int x0, int y0, int x1, int y1)
@@ -174,6 +176,7 @@ namespace Risovalka2
                 //Последняя точка
                 PutPixel(g, clr, x1, y1, 255);
             }
+
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -182,10 +185,44 @@ namespace Risovalka2
 
             if (e.Button == MouseButtons.Right)
             {
-                for (int i = 0; i < points.Count - 1; i++)
+                if (rbBrezenhem.Checked)
                 {
-                    DrawWuLine(g, Color.Black, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
-                    //Bresenham4Line(g, Color.Black, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
+                    for (int i = 0; i < points.Count - 1; i++)
+                    {
+                        Bresenham4Line(g, Color.Black, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
+                    }
+                }
+                else if (rbBrizenhemPlus.Checked)
+                {
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        DrawWuLine(g, Color.Black, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
+                    }
+                }
+                // Кривая по 4 точкам
+                else if (rbCurveBize.Checked && points.Count == 4)
+                {
+                    PointF[] pointFs = new PointF[4];
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        pointFs[i] = points[i];
+                    }
+                    BezierCurve curve = new BezierCurve(pointFs);
+                    curve.Draw(g);
+                }
+                // Кривая Бизье n порядка
+                else if (rbBizeN.Checked)
+                {
+                    List<PointF> pointFs = new List<PointF>();
+                    BezierCurve curve = new BezierCurve(pointFs);
+                    foreach (var item in points)
+                    {
+                        pointFs.Add(item);
+                    }
+                    curve.dataPointsN = pointFs;
+                    g = Graphics.FromHwnd(pictureBox1.Handle);
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    curve.DrawN(g);
                 }
             }
         }
