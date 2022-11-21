@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Risovalka2
@@ -10,6 +11,7 @@ namespace Risovalka2
         int countClick = 0;
         List<Point> points = new List<Point>();
         private CSpline _model;
+        public Color ColorLine { get; set; } = Color.Black;
         public Form1()
         {
             InitializeComponent();
@@ -182,14 +184,14 @@ namespace Risovalka2
                 {
                     for (int i = 0; i < points.Count - 1; i++)
                     {
-                        Bresenham4Line(g, Color.Black, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
+                        Bresenham4Line(g, ColorLine, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
                     }
                 }
                 else if (rbBrizenhemPlus.Checked)
                 {
                     for (int i = 0; i < points.Count; i++)
                     {
-                        DrawWuLine(g, Color.Black, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
+                        DrawWuLine(g, ColorLine, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
                     }
                 }
                 // Кривая по 4 точкам
@@ -215,7 +217,7 @@ namespace Risovalka2
                     curve.dataPointsN = pointFs;
                     g = Graphics.FromHwnd(pictureBox1.Handle);
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    curve.DrawN(g);
+                    curve.DrawN(g, ColorLine);
                 }
             }
         }
@@ -225,7 +227,7 @@ namespace Risovalka2
         {
             _model.Df1 = (double)vScrollBar1.Value / 1000;
             _model.Dfn = (double)vScrollBar2.Value / 1000;
-            _model.GenerateSplines();
+            _model.GenerateSplines(ColorLine);
         }
 
         private void GetDerivatesFromModel()
@@ -252,23 +254,25 @@ namespace Risovalka2
         {
             var random = new Random();
 
-            var points = new CPoint[(int)numericUpDown1.Value];
-            var interval = (pictureBox1.Width - 20) / (int)numericUpDown1.Value;
+            var spline = new CPoint[points.Count];
+            var interval = (pictureBox1.Width - 20) / points.Count;
 
-            for (var i = 0; i < (int)numericUpDown1.Value; i++)
+            for (var i = 0; i < points.Count; i++)
             {
-                points[i] = new CPoint(random.Next(10 + interval * i, 10 + interval * (i + 1)),
-                random.Next(10, pictureBox1.Height - 10));
+                spline[i] = new CPoint(points[i].X, points[i].Y);
             }
 
-            _model = new CSpline(points);
+            _model = new CSpline(spline);
 
             vScrollBar1.Value = 0;
             vScrollBar2.Value = 0;
 
-            SetD1ToModel();
-            GetDerivatesFromModel();
-            Draw();
+            if (points.Count > 1)
+            {
+                SetD1ToModel();
+                GetDerivatesFromModel();
+                Draw();
+            }
         }
 
         private void vScrollBar1_ValueChanged(object sender, EventArgs e)
@@ -284,6 +288,24 @@ namespace Risovalka2
         private void vScrollBar2_ValueChanged(object sender, EventArgs e)
         {
             if (_model != null)
+            {
+                SetD1ToModel();
+                GetDerivatesFromModel();
+                Draw();
+            }
+        }
+
+        private void btnSelectColor_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            ColorLine = colorDialog1.Color;
+            pictureBox2.BackColor = ColorLine;
+        }
+
+        private void pictureBox2_BackColorChanged(object sender, EventArgs e)
+        {
+            CSplineSubinterval.ColorLine = ColorLine;
+            if (_model != null & points.Count > 1)
             {
                 SetD1ToModel();
                 GetDerivatesFromModel();

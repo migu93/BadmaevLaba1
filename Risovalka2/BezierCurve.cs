@@ -128,7 +128,7 @@ namespace Risovalka2
         {
             return (Fuctorial(n) / (Fuctorial(i) * Fuctorial(n - i))) * (float)Math.Pow(t, i) * (float)Math.Pow(1 - t, n - i);
         }
-        public void DrawN(Graphics g)// Функция рисования кривой
+        public void DrawN(Graphics g, Color color)// Функция рисования кривой
         {
             int j = 0;
             float step = 0.01f;// Возьмем шаг 0.01 для большей точности
@@ -148,7 +148,7 @@ namespace Risovalka2
                 j++;
 
             }
-            g.DrawLines(new Pen(Color.Red), result);// Рисуем полученную кривую Безье
+            g.DrawLines(new Pen(color), result);// Рисуем полученную кривую Безье
         }
     }
 }

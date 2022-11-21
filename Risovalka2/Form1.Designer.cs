@@ -36,7 +36,6 @@
             this.typesLine = new System.Windows.Forms.Panel();
             this.rbBizeN = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.vScrollBar2 = new System.Windows.Forms.VScrollBar();
             this.label2 = new System.Windows.Forms.Label();
@@ -47,9 +46,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_dfn = new System.Windows.Forms.TextBox();
             this.textBox_ddfn = new System.Windows.Forms.TextBox();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btnSelectColor = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.typesLine.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -140,29 +142,6 @@
             this.button1.Text = "Отрисовка сплайна";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(1050, 453);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(65, 22);
-            this.numericUpDown1.TabIndex = 8;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
             // 
             // vScrollBar1
             // 
@@ -262,11 +241,34 @@
             this.textBox_ddfn.Size = new System.Drawing.Size(69, 25);
             this.textBox_ddfn.TabIndex = 16;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Black;
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox2.Location = new System.Drawing.Point(1084, 444);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(30, 30);
+            this.pictureBox2.TabIndex = 19;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.BackColorChanged += new System.EventHandler(this.pictureBox2_BackColorChanged);
+            // 
+            // btnSelectColor
+            // 
+            this.btnSelectColor.Location = new System.Drawing.Point(944, 444);
+            this.btnSelectColor.Name = "btnSelectColor";
+            this.btnSelectColor.Size = new System.Drawing.Size(134, 30);
+            this.btnSelectColor.TabIndex = 20;
+            this.btnSelectColor.Text = "Выбрать цвет";
+            this.btnSelectColor.UseVisualStyleBackColor = true;
+            this.btnSelectColor.Click += new System.EventHandler(this.btnSelectColor_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1133, 545);
+            this.Controls.Add(this.btnSelectColor);
+            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox_dfn);
@@ -277,7 +279,6 @@
             this.Controls.Add(this.textBox_df1);
             this.Controls.Add(this.vScrollBar2);
             this.Controls.Add(this.vScrollBar1);
-            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.typesLine);
             this.Controls.Add(this.txtArray);
@@ -289,7 +290,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.typesLine.ResumeLayout(false);
             this.typesLine.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,7 +305,6 @@
         private System.Windows.Forms.Panel typesLine;
         private System.Windows.Forms.RadioButton rbBizeN;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.VScrollBar vScrollBar1;
         private System.Windows.Forms.VScrollBar vScrollBar2;
         private System.Windows.Forms.Label label2;
@@ -315,6 +315,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox_dfn;
         private System.Windows.Forms.TextBox textBox_ddfn;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button btnSelectColor;
     }
 }
 

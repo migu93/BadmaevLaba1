@@ -14,11 +14,14 @@ namespace Risovalka2
         public double C { get; }
         public double D { get; }
 
+        public static Color ColorLine { get; set; }
+
         private readonly CPoint _p1;
         private readonly CPoint _p2;
 
-        public CSplineSubinterval(CPoint p1, CPoint p2, double df, double ddf)
+        public CSplineSubinterval(CPoint p1, CPoint p2, double df, double ddf, Color colorLine)
         {
+            ColorLine = colorLine;
             _p1 = p1;
             _p2 = p2;
 
@@ -43,9 +46,9 @@ namespace Risovalka2
             return 6 * A * (x - _p1.X) + 2 * B;
         }
 
-        public void Draw(Graphics canvas, Color colorLine)
+        public void Draw(Graphics canvas)
         {
-            Pen pen = new Pen(Color.Red, 1);
+            Pen pen = new Pen(ColorLine, 1);
 
             for (int k = _p1.X; k < _p2.X; k++)
             {
