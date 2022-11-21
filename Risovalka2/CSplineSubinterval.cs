@@ -43,7 +43,7 @@ namespace Risovalka2
             return 6 * A * (x - _p1.X) + 2 * B;
         }
 
-        public void Draw(Graphics canvas)
+        public void Draw(Graphics canvas, Color colorLine)
         {
             Pen pen = new Pen(Color.Red, 1);
 
