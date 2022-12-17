@@ -24,7 +24,7 @@ namespace Risovalka2
         }
 
         //Статический метод, реализующий отрисовку 4-связной линии
-        static public void Bresenham4Line(Graphics g, Color clr, int x0, int y0,
+        static public void BresenhamLine(Graphics g, Color clr, int x0, int y0,
                                                                  int x1, int y1)
         {
             //Изменения координат
@@ -184,7 +184,7 @@ namespace Risovalka2
                 {
                     for (int i = 0; i < points.Count - 1; i++)
                     {
-                        Bresenham4Line(g, ColorLine, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
+                        BresenhamLine(g, ColorLine, points[i].X, points[i].Y, points[i + 1].X, points[i + 1].Y);
                     }
                 }
                 else if (rbBrizenhemPlus.Checked)
